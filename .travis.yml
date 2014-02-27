@@ -11,7 +11,7 @@ services:
 notifications:
   email:
     recipients:
-      - healthcare-ci@googlegroups.com
+      - info@port80labs.com
     on_failure: change
 bundler_args: --without test develop
 
