@@ -109,6 +109,10 @@ sudo service apache2 restart > /dev/null 2>&1
 sudo stop delayed_worker > /dev/null 2>&1
 sudo start delayed_worker > /dev/null 2>&1
 echo "$(tput setaf 2)Complete$(tput sgr0)"
+
+IP=`curl -Lfs ifconfig.me` > /dev/null 2>&1
+echo "$(tput setaf 2)Server Ready - Visit http://$IP/$(tput sgr0)"
+
 echo -n "$(tput setaf 4)"
 echo "##############################################"
 echo "#       popHealth Installation Complete      #"
