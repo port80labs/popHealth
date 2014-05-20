@@ -14,7 +14,7 @@ echo -n "$(tput sgr0)"
 # get the right version of the software
 echo -n "$(tput setaf 7)"
 PS3="Please choose which version of popHealth you want to install: "
-options=("certified" "master" "2.1.2")
+options=("master" "2.1.2")
 select option in "${options[@]}"
 do
   case $option in
