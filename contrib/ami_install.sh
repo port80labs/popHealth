@@ -84,10 +84,9 @@ mongo pophealth-production --eval "db.dropDatabase()" > /dev/null 2>&1
 sudo su - pophealth <<'EOF'
   cd popHealth
   echo -n "$(tput setaf 4)Installing required gems... $(tput sgr0)"
-  bundle install --without develop test
+  bundle install --without develop test > /dev/null 2>&1
   echo "$(tput setaf 2)Complete$(tput sgr0)"
   echo -n "$(tput setaf 4)Importing measure bundles... $(tput sgr0)"
-  cd popHealth
   RAILS_ENV=production bundle exec rake bundle:import[/home/pophealth/bundle-latest.zip,false,false,"*",true,true] > /dev/null 2>&1
   echo "$(tput setaf 2)Complete$(tput sgr0)"
 EOF
@@ -95,11 +94,11 @@ EOF
 # run rake tasks
 sudo su - pophealth <<'EOF'
 cd popHealth
-echo -n "$(tput setaf 4)Initializing popHealth database... $(tput sgr0)"
+echo -n "$(tput setaf 4)Initializing popHealth database (this may take some time.. get some coffee)... $(tput sgr0)"
 RAILS_ENV=production bundle exec rake db:seed
 RAILS_ENV=production bundle exec rake admin:create_admin_account
-RAILS_ENV=production bundle exec rake assets:precompile
-rm .ruby-version
+RAILS_ENV=production bundle exec rake assets:precompile > /dev/null 2>&1
+rm .ruby-version > /dev/null 2>&1
 echo "$(tput setaf 2)Complete$(tput sgr0)"
 EOF
 
