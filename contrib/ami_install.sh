@@ -4,6 +4,7 @@
 VMASTER='https://github.com/pophealth/popHealth/archive/master.zip'
 VCERT='https://github.com/yoon/popHealth/archive/nmedw.zip'
 V212='https://github.com/pophealth/popHealth/archive/v2.1.2.zip'
+V300='https://github.com/pophealth/popHealth/archive/v3.0.0.zip'
 LINK=''
 echo -n "$(tput setaf 4)"
 echo "##############################################"
@@ -14,7 +15,7 @@ echo -n "$(tput sgr0)"
 # get the right version of the software
 echo -n "$(tput setaf 7)"
 PS3="Please choose which version of popHealth you want to install: "
-options=("master" "2.1.2")
+options=("master" "3.0.0" "2.1.2")
 select option in "${options[@]}"
 do
   case $option in
@@ -23,6 +24,9 @@ do
       break;;
     "master")
       LINK=$VMASTER
+      break;;
+    "3.0.0")
+      LINK=$V300
       break;;
     "2.1.2")
       LINK=$V212
