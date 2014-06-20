@@ -86,11 +86,6 @@ mongo pophealth-production --eval "db.dropDatabase()" > /dev/null 2>&1
 # install gems and import bundle
 sudo su - pophealth <<'EOF'
   cd popHealth
-  echo "checking option |$option|"
-  if [ "$option" == "certified" ]; then 
-    echo "looks like certified"
-    git init . 
-  fi
   echo -n "$(tput setaf 4)Installing required gems... $(tput sgr0)"
   bundle install --without develop test > /dev/null 2>&1
   echo "$(tput setaf 2)Complete$(tput sgr0)"
