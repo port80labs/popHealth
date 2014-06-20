@@ -1,11 +1,12 @@
 #!/bin/bash
 # This is a script that finishes the setup for a popHealth instance on an Amazon EC2
 
-VMASTER='https://github.com/pophealth/popHealth/archive/master.zip'
-VCERT='https://github.com/yoon/popHealth/archive/nmedw.zip'
-V212='https://github.com/pophealth/popHealth/archive/v2.1.2.zip'
-V300='https://github.com/pophealth/popHealth/archive/v3.0.0.zip'
-LINK=''
+VCERT='nmedw'
+VMASTER='master'
+V212='v2.1.1'
+V300='v3.0.0'
+LINK='https://github.com/pophealth/popHealth.git'
+BRANCH=''
 echo -n "$(tput setaf 4)"
 echo "##############################################"
 echo "#           popHealth Installation           #"
@@ -15,28 +16,29 @@ echo -n "$(tput sgr0)"
 # get the right version of the software
 echo -n "$(tput setaf 7)"
 PS3="Please choose which version of popHealth you want to install: "
-options=("master" "3.0.0" "2.1.2")
+options=("master" "3.0.0" "2.1.2" "certified")
 select option in "${options[@]}"
 do
   case $option in
     "certified")
-      LINK=$VCERT
+      LINK='https://github.com/yoon/popHealth.git'
+      BRANCH=$VCERT
       break;;
     "master")
-      LINK=$VMASTER
+      BRANCH=$VMASTER
       break;;
     "3.0.0")
-      LINK=$V300
+      BRANCH=$V300
       break;;
     "2.1.2")
-      LINK=$V212
+      BRANCH=$V212
       break;;
   esac
 done
 echo -n "$(tput sgr0)"
 echo -n "$(tput setaf 4)Downloading popHealth code... $(tput sgr0)"
 sudo rm -rf /home/pophealth/popHealth > /dev/null 2>&1
-sudo curl -Lfs "$LINK" -o /home/pophealth/popHealth.zip
+sudo git clone -b "$BRANCH" "$LINK" /home/pophealth/popHealth > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "$(tput setaf 1)Failed!$(tput sgr0)"
   echo "$(tput setaf 1)Error downloading the required code. Please try again.$(tput sgr0)"
@@ -44,9 +46,6 @@ if [ $? -ne 0 ]; then
 fi
 
 # extract and move the right location
-sudo unzip -d /home/pophealth /home/pophealth/popHealth.zip > /dev/null 2>&1
-sudo rm -rf /home/pophealth/popHealth.zip > /dev/null 2>&1
-sudo mv /home/pophealth/popHealth-* /home/pophealth/popHealth
 sudo rm -rf /home/pophealth/popHealth/.ruby-version > /dev/null 2>&1
 sudo chown -R pophealth:pophealth /home/pophealth/popHealth
 echo "$(tput setaf 2)Complete$(tput sgr0)"
@@ -87,6 +86,11 @@ mongo pophealth-production --eval "db.dropDatabase()" > /dev/null 2>&1
 # install gems and import bundle
 sudo su - pophealth <<'EOF'
   cd popHealth
+  echo "checking option |$option|"
+  if [ "$option" == "certified" ]; then 
+    echo "looks like certified"
+    git init . 
+  fi
   echo -n "$(tput setaf 4)Installing required gems... $(tput sgr0)"
   bundle install --without develop test > /dev/null 2>&1
   echo "$(tput setaf 2)Complete$(tput sgr0)"
