@@ -3,7 +3,7 @@
 
 VCERT='nmedw'
 VMASTER='master'
-V212='v2.1.1'
+V212='v2.1.2'
 V300='v3.0.0'
 LINK='https://github.com/pophealth/popHealth.git'
 BRANCH=''
